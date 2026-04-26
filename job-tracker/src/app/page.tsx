@@ -1,5 +1,5 @@
 /*
-Es tu página de inicio (/).
+Es la página de inicio (/).
 */
 
 import Image from "next/image";
