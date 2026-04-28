@@ -17,16 +17,16 @@ Crear una aplicación web real, funcional y con buena experiencia de usuario (UX
 3. Dashboard: Un panel de métricas con el total de aplicaciones, entrevistas, tasas de respuesta y gráficos.
 
 # Plan de Desarrollo
-#### Fase 1: Los Cimientos 
+#### Fase 1: Los Cimientos (Completado)
 - Definir el modelo de datos.
 - Conectar la base de datos (PostgreSQL + Prisma).
 
-### Fase 2: El Esqueleto y Enrutamiento (Structure & Screens)
+### Fase 2: El Esqueleto y Enrutamiento (Structure & Screens) (Completado)
 - Crear las carpetas en Next.js para nuestras páginas principales (/login, /register, /dashboard, /jobs).
 - Crear un Layout global (por ejemplo, una barra de navegación sencilla que se vea en todas las pantallas).
 
 ### Fase 3: Autenticación (El Guardia de Seguridad)
-- Instalar y configurar Auth.js.
+- Instalar y configurar Auth.js. (específicamente la versión para Next.js llamada next-auth)
 - Hacer que el registro y el inicio de sesión funcionen realmente contra tu base de datos.
 - Proteger la ruta del /dashboard para que nadie entre sin iniciar sesión.
 
