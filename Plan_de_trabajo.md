@@ -33,7 +33,6 @@ Crear una aplicación web real, funcional y con buena experiencia de usuario (UX
 
 ### Fase 3: Autenticación (El Guardia de Seguridad)
 
-- Volver a crear prisma.config.ts
 - Instalar y configurar Auth.js. (específicamente la versión para Next.js llamada next-auth)
 - Hacer que el registro y el inicio de sesión funcionen realmente contra tu base de datos.
 - Proteger la ruta del /dashboard para que nadie entre sin iniciar sesión.
@@ -52,3 +51,5 @@ Crear una aplicación web real, funcional y con buena experiencia de usuario (UX
 
 - Agregar alertas de éxito o error (ej. "¡Vacante guardada!").
 - Asegurar que la aplicación se sienta rápida y profesional.
+
+- Volver a crear prisma.config.ts

@@ -8,7 +8,15 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient(); // Abre la conexión con la bd
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+// 1. Configuramos el Pool de conexiones con tu URL
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL || "postgresql://postgres:michimiau@localhost:5432/job_tracker_db?schema=public" 
+});
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter }); // Inicializamos PrismaClient con el adaptador
 
 export async function POST(request: Request) { // nombrar la función como POST significa que este archivo solo responderá cuando alguien le envíe datos
   try {

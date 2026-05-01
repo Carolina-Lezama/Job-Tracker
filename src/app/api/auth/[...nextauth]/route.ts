@@ -8,7 +8,16 @@ import CredentialsProvider from "next-auth/providers/credentials"; // permite in
 import { PrismaClient } from "@prisma/client"; // permite que tu código de JavaScript/TypeScript hable con tu base de datos PostgreSQL.
 import bcrypt from "bcryptjs"; // para encriptar contraseñas y compararlas
 
-const prisma = new PrismaClient(); //puente de comunicación
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+// 1. Configuramos el Pool de conexiones con tu URL
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL || "postgresql://postgres:michimiau@localhost:5432/job_tracker_db?schema=public" 
+});
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter }); // Inicializamos PrismaClient con el adaptador
+
 
 const handler = NextAuth({ // inicializamos la configuración
   providers: [
