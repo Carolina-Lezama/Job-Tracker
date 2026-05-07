@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -30,48 +31,72 @@ export default function LoginForm() {
     }
   };
 
-  return (
-    <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Iniciar Sesión</h2>
+return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       
-      {error && (
-        <div className="bg-red-100 text-red-600 p-3 mb-4 rounded text-sm text-center">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-          <input
-            type="email"
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-black"
-            placeholder="tu@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        
+        {/* ENCABEZADO */}
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Bienvenido de nuevo
+          </h2>
+          <p className="text-sm text-gray-500">
+            Ingresa tus credenciales para acceder a tu Job Tracker
+          </p>
         </div>
 
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
-          <input
-            type="password"
-            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-black"
-            placeholder="******"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        {/* EL FORMULARIO */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          
+          {/* CAMPO DE EMAIL */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Correo Electrónico
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="tu@email.com"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
-        >
-          Entrar
-        </button>
-      </form>
+          {/* CAMPO DE CONTRASEÑA */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              required
+            />
+          </div>
+
+          {/* BOTÓN DE INICIO DE SESIÓN */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 shadow-md mt-2"
+          >
+            Iniciar Sesión
+          </button>
+        </form>
+
+        {/* ENLACE DE REGISTRO */}
+        <p className="text-center text-sm text-gray-600 mt-6">
+          ¿No tienes una cuenta?{" "}
+          <Link href="/register" className="font-semibold text-blue-600 hover:text-blue-500 hover:underline">
+            Regístrate aquí
+          </Link>
+        </p>
+
+      </div>
     </div>
   );
 }

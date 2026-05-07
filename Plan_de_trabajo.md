@@ -53,3 +53,18 @@ Crear una aplicación web real, funcional y con buena experiencia de usuario (UX
 - Asegurar que la aplicación se sienta rápida y profesional.
 
 - Volver a crear prisma.config.ts
+
+
+Módulo 2: Crear (Create) - Formulario y Backend
+
+
+
+Backend: Crear nuestra ruta api/jobs/route.ts que reciba esos datos y use Prisma para hacer el INSERT en la base de datos.
+
+Módulo 3: Leer (Read) - La Tabla de Visualización
+
+Frontend/Backend unidos: Modificaremos tu página src/app/jobs/page.tsx para que, antes de cargar la pantalla, vaya a PostgreSQL, busque todas las vacantes que te pertenecen, y las dibuje en una tabla moderna con Tailwind.
+
+Módulo 4: Actualizar y Eliminar (Update & Delete)
+
+Interactividad: Agregar un botón de "Basurero" para eliminar registros, y un selector (Dropdown) para que puedas cambiar el estatus mágicamente de "Aplicada" a "Entrevista" u "Oferta", actualizando la base de datos al instante.
