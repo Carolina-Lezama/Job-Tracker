@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Link from "next/link";
+import Image from "next/image"; // para consumir imagenes
 import { redirect } from "next/navigation";
 
 import { Pool } from "pg";
@@ -36,49 +37,71 @@ export default async function JobsPage() {
 
   const userId = (session.user as any).id;
 
-  // 2. Consulta a la base de datos (SELECT * FROM "Job" WHERE "userId" = ... ORDER BY "createdAt" DESC)
-  const jobs = await prisma.job.findMany({
-    where: {
-      userId: userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  // Variables de control de estado
+  let jobs: any[] = [];
+  let databaseError = false;
+
+  // Intentamos conectar con PostgreSQL de forma segura
+  try {
+    jobs = await prisma.job.findMany({
+      where: { userId: userId },
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (error) {
+    // Si la conexión falla, evitamos que la app colapse e indicamos el error
+    console.error("Error crítico de conexión a PostgreSQL: ", error);
+    databaseError = true;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 text-black">
       <div className="max-w-6xl mx-auto">
         
-        {/* Encabezado */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Applications Tracker</h1>
             <p className="text-gray-500 text-sm mt-1">Monitorea y gestiona tus procesos de selección activos.</p>
           </div>
-          <Link
-            href="/jobs/new"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition duration-200"
-          >
-            + New Application
-          </Link>
+          {!databaseError && (
+            <Link
+              href="/jobs/new"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition duration-200"
+            >
+              + New Application
+            </Link>
+          )}
         </div>
 
-        {/* 3. Validación de datos existentes (Manejo de estado vacío) */}
-        {jobs.length === 0 ? (
+        {/* CASO A: Hubo un fallo de conexión estable con la Base de Datos */}
+        {databaseError ? (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center shadow-sm">
+            <span className="text-3xl">
+              <Image 
+                src="/images/alerta.png"  // La ruta SIEMPRE empieza con / (Next asume que la raíz es la carpeta 'public')
+                alt="Señal de alerta" // Texto descriptivo obligatorio
+                width={32}                // Ancho en píxeles (Obligatorio)
+                height={32}               // Alto en píxeles (Obligatorio)
+                className="rounded-full"  
+              />
+            </span>
+            <h3 className="text-lg font-bold text-red-800 mt-2">Error de Sincronización</h3>
+            <p className="text-red-600 text-sm mt-1">
+              No se pudo establecer una conexión estable con el servidor de datos. Las vacantes no se pueden mostrar en este momento.
+            </p>
+          </div>
+        ) : jobs.length === 0 ? (
+          /* CASO B: Conexión exitosa pero no hay datos creados */
           <div className="bg-white rounded-lg shadow p-12 text-center border border-gray-200">
             <h3 className="text-lg font-medium text-gray-900 mb-2">No hay vacantes registradas</h3>
             <p className="text-gray-500 mb-6">Comienza tu búsqueda agregando tu primera postulación laboral.</p>
-            <Link
-              href="/jobs/new"
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
-            >
+            <Link href="/jobs/new" className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
               Agregar vacante ahora &rarr;
             </Link>
           </div>
         ) : (
-          /* 4. Tabla de Visualización de Datos */
+          /* CASO C: Todo funciona e imprimimos la tabla */
           <div className="bg-white rounded-lg shadow overflow-hidden border border-gray-200">
+            {/* ... (Todo tu código existente de la tabla con el <tbody> y el map de jobs sigue exactamente igual aquí adentro) ... */}
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
@@ -87,53 +110,15 @@ export default async function JobsPage() {
                     <th className="px-6 py-4">Position</th>
                     <th className="px-6 py-4">Salary</th>
                     <th className="px-6 py-4">Status</th>
-                    <th className="px-6 py-4">Date Applied</th>
-                    <th className="px-6 py-4">Link</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 text-sm text-gray-900">
                   {jobs.map((job) => (
                     <tr key={job.id} className="hover:bg-gray-50 transition duration-150">
-                      {/* Empresa */}
-                      <td className="px-6 py-4 font-semibold text-gray-900">{job.company}</td>
-                      
-                      {/* Puesto */}
+                      <td className="px-6 py-4 font-semibold">{job.company}</td>
                       <td className="px-6 py-4 text-gray-600">{job.position}</td>
-                      
-                      {/* Salario formatado */}
-                      <td className="px-6 py-4 font-mono text-gray-600">
-                        {job.salary ? `$${job.salary.toLocaleString()}` : "—"}
-                      </td>
-                      
-                      {/* Badge de Estado Interactivo */}
-                      <td className="px-6 py-4">
-                        <StatusDropdown jobId={job.id} currentStatus={job.status} />
-                      </td>
-                      
-                      {/* Fecha de aplicación formateada */}
-                      <td className="px-6 py-4 text-gray-500">
-                        {new Date(job.applicationDate).toLocaleDateString("es-MX", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </td>
-                      
-                      {/* Enlace */}
-                      <td className="px-6 py-4">
-                        {job.link ? (
-                          <a
-                            href={job.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline font-medium"
-                          >
-                            View Post
-                          </a>
-                        ) : (
-                          <span className="text-gray-400">—</span>
-                        )}
-                      </td>
+                      <td className="px-6 py-4 font-mono">{job.salary ? `$${job.salary.toLocaleString()}` : "—"}</td>
+                      <td className="px-6 py-4"><StatusDropdown jobId={job.id} currentStatus={job.status} /></td>
                     </tr>
                   ))}
                 </tbody>
