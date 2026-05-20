@@ -8,10 +8,9 @@ export default function Navbar({ session }: { session: any }) {
   return (
     <nav className="bg-gray-800 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <Link href="/" className="font-bold text-xl tracking-tight hover:text-gray-200">
+        <h2 className="font-bold text-xl tracking-tight hover:text-gray-200">
           Job Tracker 
-        </Link>
-        
+        </h2>
         <ul className="flex space-x-6 items-center">
           {/* Si el usuario HA INICIADO SESIÓN, mostramos herramientas de gestión */}
           {session ? (

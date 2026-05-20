@@ -4,6 +4,7 @@ Componente visual que no es una pagina completa
 
 "use client"; // Le dice a Next.js que este componente usa interactividad en el navegador
 
+import Link from "next/link";
 import { useState } from "react"; // para que el componente recuerde cosas mientras el usuario interactúa, sin recargar la página.
 import { useRouter } from "next/navigation";
 
@@ -98,6 +99,12 @@ export default function RegisterPage() {
             Registrarse
           </button>
         </form>
+        <p className="text-center text-sm text-gray-600 mt-6">
+          ¿Ya tienes una cuenta?{" "}
+          <Link href="/login" className="font-semibold text-blue-600 hover:text-blue-500 hover:underline">
+            Inicia sesión aquí
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -79,9 +79,9 @@ export default async function JobsPage() {
               <Image 
                 src="/images/alerta.png"  // La ruta SIEMPRE empieza con / (Next asume que la raíz es la carpeta 'public')
                 alt="Señal de alerta" // Texto descriptivo obligatorio
-                width={32}                // Ancho en píxeles (Obligatorio)
-                height={32}               // Alto en píxeles (Obligatorio)
-                className="rounded-full"  
+                width={36}                // Ancho en píxeles (Obligatorio)
+                height={36}               // Alto en píxeles (Obligatorio)
+                className="block mx-auto" 
               />
             </span>
             <h3 className="text-lg font-bold text-red-800 mt-2">Error de Sincronización</h3>

@@ -96,7 +96,7 @@ return (
           </Link>
         </p>
 
-      </div>
+      </div> 
     </div>
   );
 }
