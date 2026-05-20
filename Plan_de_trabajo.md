@@ -31,7 +31,7 @@ Crear una aplicación web real, funcional y con buena experiencia de usuario (UX
 - Crear las carpetas en Next.js para nuestras páginas principales (/login, /register, /dashboard, /jobs).
 - Crear un Layout global (por ejemplo, una barra de navegación sencilla que se vea en todas las pantallas).
 
-### Fase 3: Autenticación (El Guardia de Seguridad)
+### Fase 3: Autenticación (El Guardia de Seguridad) (Completado)
 
 - Instalar y configurar Auth.js. (específicamente la versión para Next.js llamada next-auth)
 - Hacer que el registro y el inicio de sesión funcionen realmente contra tu base de datos.

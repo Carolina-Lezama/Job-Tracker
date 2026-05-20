@@ -10,6 +10,7 @@ import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import StatusDropdown from "@/components/jobs/StatusDropdown";
+import JobActions from "@/components/jobs/JobActions";
 
 const pool = new Pool({ 
   connectionString: process.env.DATABASE_URL || "postgresql://postgres:michimiau@localhost:5432/job_tracker_db?schema=public" 
@@ -110,6 +111,9 @@ export default async function JobsPage() {
                     <th className="px-6 py-4">Position</th>
                     <th className="px-6 py-4">Salary</th>
                     <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4">Date Applied</th>
+                    <th className="px-6 py-4">Link</th>
+                    <th className="px-6 py-4 text-right">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 text-sm text-gray-900">
@@ -119,6 +123,32 @@ export default async function JobsPage() {
                       <td className="px-6 py-4 text-gray-600">{job.position}</td>
                       <td className="px-6 py-4 font-mono">{job.salary ? `$${job.salary.toLocaleString()}` : "—"}</td>
                       <td className="px-6 py-4"><StatusDropdown jobId={job.id} currentStatus={job.status} /></td>
+                      
+                      {/* 1. COLUMNA DE FECHA */}
+                      <td className="px-6 py-4 text-gray-500 text-sm">
+                        {new Date(job.applicationDate).toLocaleDateString("es-MX", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </td>
+                      
+                      {/* 2. COLUMNA DE LINK */}
+                      <td className="px-6 py-4 text-sm">
+                        {job.link ? (
+                          <a 
+                            href={job.link} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 hover:underline font-medium"
+                          >
+                            Ver vacante
+                          </a>
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right"><JobActions job={job} /></td>
                     </tr>
                   ))}
                 </tbody>
